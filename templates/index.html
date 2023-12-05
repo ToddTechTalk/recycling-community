@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Recycling Community</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Smart Recycling Community</h1>
+        <h2>Share your thoughts about recycling and environmentalism...</h2>
+    </header>
+    <div class="container">
+        <form method="post" action="/add">
+            <input type="text" name="title" placeholder="Title of your post">
+            <textarea name="content" placeholder="Share your thoughts about recycling and environmentalism..."></textarea>
+            <input type="text" name="user_name" placeholder="Your Name">
+            <input type="submit" value="Post">
+        </form>
+        <div id="posts">
+            {% for post in posts %}
+                <div class="post">
+                    <h3>{{ post[1] }}</h3>
+                    <p>{{ post[2] }} - Posted by {{ post[3] }} on {{ post[4] }}</p>
+                    <form method="post" action="/reply/{{ post[0] }}">
+                        <textarea name="content" placeholder="Write a reply..."></textarea>
+                        <input type="text" name="user_name" placeholder="Your Name">
+                        <input type="submit" value="Reply">
+                    </form>
+                    {% if post[0] in post_replies %}
+                        <div class="replies">
+                            {% for reply in post_replies[post[0]] %}
+                                <div class="reply">
+                                    <p>{{ reply[2] }} - Replied by {{ reply[3] }} on {{ reply[4] }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
